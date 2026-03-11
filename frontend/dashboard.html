@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>StudyTask Dashboard</title>
+<p id="todayDate"></p>
 
 <style>
 
@@ -170,6 +171,8 @@ background:#f0f0f0;
 <option value="done">Done</option>
 </select>
 
+<input type="date" id="deadline">
+
 <button class="add" onclick="addTask()">Tambah Task</button>
 
 </div>
@@ -179,6 +182,8 @@ background:#f0f0f0;
 <hr>
 
 <h2>Daftar Task</h2>
+
+<p id="todayDate"></p>
 
 <div id="taskList"></div>
 
@@ -191,6 +196,72 @@ background:#f0f0f0;
 </body>
 
 <script>
+
+function getDueMessage(deadline,status){
+
+if(status === "done"){
+return "✅ Mantap! Task sudah selesai"
+}
+
+if(!deadline){
+return "-"
+}
+
+const today = new Date()
+const due = new Date(deadline)
+
+today.setHours(0,0,0,0)
+due.setHours(0,0,0,0)
+
+const diff = Math.ceil((due - today)/(1000*60*60*24))
+
+if(diff > 1){
+return `⏳ Due date ${diff} hari lagi`
+}
+
+if(diff === 1){
+return "⚠️ Besok deadline!"
+}
+
+if(diff === 0){
+return "❗ Deadline hari ini!"
+}
+
+return `🚨 Terlambat ${Math.abs(diff)} hari`
+
+}
+
+function showToast(message){
+
+const toast = document.getElementById("toast")
+
+toast.innerText = message
+toast.style.display="block"
+
+setTimeout(()=>{
+toast.style.display="none"
+},3000)
+
+}
+
+function showDate(){
+
+const today=new Date()
+
+const options={
+weekday:'long',
+year:'numeric',
+month:'long',
+day:'numeric'
+}
+
+const date=today.toLocaleDateString('id-ID',options)
+
+document.getElementById("todayDate").innerText=date
+
+}
+
+showDate()
 
 const token=localStorage.getItem("token")
 
@@ -213,7 +284,10 @@ headers:{
 
 })
 
-const tasks = await response.json()
+const result = await response.json()
+const tasks = result.data ?? result
+
+console.log("TASK DATA:",tasks)
 
 const list = document.getElementById("taskList")
 
@@ -221,7 +295,9 @@ list.innerHTML=""
 
 tasks.forEach(task=>{
 
-list.innerHTML+=`
+const dueMessage = getDueMessage(task.deadline, task.status)
+
+list.innerHTML += `
 
 <div class="card">
 
@@ -231,11 +307,16 @@ list.innerHTML+=`
 
 <p>Status : ${task.status}</p>
 
-<a href="edit.html?id=${task.id}&title=${task.title}&description=${task.description}">
+<p>Deadline : ${task.deadline ?? '-'}</p>
+
+<p>${dueMessage}</p>
+
+<a href="edit.html?id=${task.id}&title=${task.title}&description=${task.description}&deadline=${task.deadline ?? ''}">
 <button class="edit">Edit</button>
 </a>
 
 <button class="delete" onclick="deleteTask(${task.id})">Delete</button>
+
 </div>
 
 `
@@ -244,7 +325,8 @@ list.innerHTML+=`
 
 }catch(error){
 
-console.log(error)
+console.log("LOAD TASK ERROR:",error)
+
 showToast("Gagal memuat task")
 
 }
@@ -270,6 +352,7 @@ async function addTask(){
 const title = document.getElementById("title").value
 const description = document.getElementById("description").value
 const status = document.getElementById("status").value
+const deadline = document.getElementById("deadline").value
 
 showLoading()
 
@@ -288,17 +371,21 @@ headers:{
 body:JSON.stringify({
 title:title,
 description:description,
-status:status
+status:status,
+deadline:deadline
 })
 
 })
 
+console.log(title, description, status, deadline)
 await response.json()
 
 showToast("Task berhasil ditambahkan")
 
+document.getElementById("taskList")
 document.getElementById("title").value=""
 document.getElementById("description").value=""
+document.getElementById("deadline").value=""
 
 loadTasks()
 
@@ -313,19 +400,6 @@ finally{
 hideLoading()
 
 }
-
-}
-
-function showToast(message){
-
-const toast = document.getElementById("toast")
-
-toast.innerText = message
-toast.style.display="block"
-
-setTimeout(()=>{
-toast.style.display="none"
-},3000)
 
 }
 
@@ -365,6 +439,7 @@ hideLoading()
 }
 
 loadTasks()
+showDate()
 
 </script>
 

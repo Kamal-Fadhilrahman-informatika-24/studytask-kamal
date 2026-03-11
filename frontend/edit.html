@@ -105,6 +105,7 @@ display:none;
 
 <input type="text" id="title">
 <input type="text" id="description">
+<input type="date" id="deadline">
 
 <select id="status">
 <option value="pending">Pending</option>
@@ -132,7 +133,9 @@ const urlParams=new URLSearchParams(window.location.search)
 const id=urlParams.get("id")
 const title=urlParams.get("title")
 const description=urlParams.get("description")
+const deadline=urlParams.get("deadline")
 
+document.getElementById("deadline").value=deadline
 document.getElementById("title").value=title
 document.getElementById("description").value=description
 
@@ -141,6 +144,7 @@ async function updateTask(){
 const newTitle=document.getElementById("title").value
 const newDescription=document.getElementById("description").value
 const status=document.getElementById("status").value
+const deadline=document.getElementById("deadline").value
 
 if(!newTitle){
 showToast("Judul tidak boleh kosong")
@@ -164,7 +168,8 @@ headers:{
 body:JSON.stringify({
 title:newTitle,
 description:newDescription,
-status:status
+status:status,
+deadline:deadline
 })
 
 })

@@ -27,7 +27,8 @@ public function store(Request $request)
         'user_id' => $user->id,
         'title' => $request->title,
         'description' => $request->description,
-        'status' => $request->status
+        'status' => $request->status ?? 'pending',
+        'deadline' => $request->deadline
     ]);
 
     return response()->json([
@@ -45,7 +46,8 @@ public function update(Request $request, $id)
     $task->update([
         'title' => $request->title,
         'description' => $request->description,
-        'status' => $request->status
+        'status' => $request->status,
+        'deadline'=>$request->deadline
     ]);
 
     return response()->json([
