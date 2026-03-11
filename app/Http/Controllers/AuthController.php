@@ -63,4 +63,19 @@ public function register(Request $request)
         ]);
     }
 
+    public function deleteAccount()
+{
+    $user = User::find(Auth::id());
+    $user->delete();
+
+    return response()->json([
+        'message' => 'Akun berhasil dihapus'
+    ]);
+}
+
+public function me()
+{
+    return response()->json(auth::user());
+}
+
 }

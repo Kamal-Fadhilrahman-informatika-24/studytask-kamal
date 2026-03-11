@@ -119,15 +119,44 @@ border-radius:5px;
 display:none;
 }
 
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.profile-icon{
+font-size:22px;
+background:white;
+color:black;
+padding:10px 14px;
+border-radius:50%;
+cursor:pointer;
+box-shadow:0 3px 8px rgba(0,0,0,0.2);
+}
+
+.profile-icon:hover{
+background:#f0f0f0;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="header">
 
 <h1>📚 StudyTask Manager</h1>
+
+<a href="profile.html">
+<div class="profile-icon">
+👤
+</div>
+</a>
+
+</div>
 
 <!-- Form Tambah Task -->
 <div class="form-task">
@@ -207,7 +236,6 @@ list.innerHTML+=`
 </a>
 
 <button class="delete" onclick="deleteTask(${task.id})">Delete</button>
-
 </div>
 
 `

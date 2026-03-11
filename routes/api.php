@@ -7,7 +7,9 @@ use App\Http\Controllers\TaskController;
  Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-
+Route::delete('/delete-account', [AuthController::class,'deleteAccount'])->middleware('auth:api');
+Route::get('/me',[AuthController::class,'me'])->middleware('auth:api');
+Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:api');
 
     Route::post('/logout',[AuthController::class,'logout']);
     Route::post('/refresh',[AuthController::class,'refresh']);
