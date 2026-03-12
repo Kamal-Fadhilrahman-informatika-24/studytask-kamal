@@ -1,14 +1,102 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>StudyTask Dashboard</title>
+<title>StudyTask Manager</title>
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+margin:0;
+color:white;
+text-align:center;
+}
+
+.container{
+background:rgba(255,255,255,0.1);
+padding:40px;
+border-radius:16px;
+backdrop-filter:blur(10px);
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+max-width:500px;
+}
+
+h1{
+margin-bottom:10px;
+}
+
+p{
+opacity:0.9;
+line-height:1.6;
+}
+
+.guide{
+text-align:left;
+margin-top:20px;
+background:rgba(255,255,255,0.1);
+padding:15px;
+border-radius:10px;
+}
+
+a{
+display:block;
+margin:12px auto;
+padding:12px;
+width:220px;
+background:white;
+color:#4f46e5;
+text-decoration:none;
+border-radius:8px;
+font-weight:bold;
+}
+
+a:hover{
+background:#f1f1f1;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h2>📚 StudyTask Manager</h2>
+<div class="container">
 
-<a href="login-vercel.html">Login</a><br>
-<a href="register.html">Register</a><br>
+<h1>📚 StudyTask Manager</h1>
+
+<p>
+StudyTask Manager adalah aplikasi sederhana yang digunakan untuk
+mencatat dan mengelola tugas belajar agar lebih terorganisir.
+</p>
+
+<div class="guide">
+
+<h3>Panduan Penggunaan</h3>
+
+<p>
+1. Jika sudah memiliki akun, klik tombol <b>Login</b> untuk masuk ke aplikasi.
+</p>
+
+<p>
+2. Jika belum memiliki akun, klik tombol <b>Register</b> untuk membuat akun baru.
+</p>
+
+<p>
+3. Setelah login, pengguna dapat menambahkan, mengedit, dan menghapus task pada halaman dashboard.
+</p>
+
+</div>
+
+<a href="login-vercel.html">🔑 Login</a>
+
+<a href="register-vercel.html">📝 Register</a>
+
+</div>
 
 </body>
 </html>
