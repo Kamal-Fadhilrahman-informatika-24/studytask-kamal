@@ -205,7 +205,12 @@ toast.style.display="none"
 
 }
 
-let tasks=JSON.parse(localStorage.getItem("tasks")) || []
+let tasks = JSON.parse(localStorage.getItem("tasks"))
+
+if(!tasks){
+tasks = []
+localStorage.setItem("tasks", JSON.stringify(tasks))
+}
 
 function saveTasks(){
 localStorage.setItem("tasks",JSON.stringify(tasks))
@@ -216,6 +221,17 @@ function loadTasks(){
 const list=document.getElementById("taskList")
 
 list.innerHTML=""
+
+if(tasks.length === 0){
+
+list.innerHTML = `
+<div class="card">
+<h3>📝 Belum ada task</h3>
+<p>Tambahkan task pertama kamu</p>
+</div>
+`
+
+}
 
 document.getElementById("totalTask").innerText=tasks.length
 
