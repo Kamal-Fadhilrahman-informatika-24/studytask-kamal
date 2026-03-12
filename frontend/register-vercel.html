@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register StudyTask</title>
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+margin:0;
+}
+
+.container{
+background:white;
+padding:40px;
+border-radius:16px;
+width:340px;
+box-shadow:0 15px 35px rgba(0,0,0,0.25);
+text-align:center;
+}
+
+h2{
+margin-bottom:25px;
+color:#111827;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #e5e7eb;
+font-size:14px;
+}
+
+input:focus{
+outline:none;
+border-color:#6366f1;
+}
+
+button{
+background:#6366f1;
+border:none;
+color:white;
+padding:12px;
+width:100%;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+margin-top:10px;
+}
+
+button:hover{
+background:#4f46e5;
+}
+
+.small{
+font-size:12px;
+color:#6b7280;
+margin-bottom:8px;
+}
+
+a{
+display:block;
+margin-top:12px;
+color:#6366f1;
+text-decoration:none;
+}
+
+a:hover{
+text-decoration:underline;
+}
+
+#toast{
+position:fixed;
+top:20px;
+right:20px;
+background:#111827;
+color:white;
+padding:15px 22px;
+border-radius:8px;
+display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📝 Buat Akun StudyTask</h2>
+
+<p style="text-align:left;font-size:13px;">Nama</p>
+<input type="text" id="name" placeholder="Nama">
+
+<p style="text-align:left;font-size:13px;">Email</p>
+<input type="email" id="email" placeholder="email@gmail.com">
+<div class="small">Gunakan email Gmail</div>
+
+<p style="text-align:left;font-size:13px;">Password</p>
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="register()">Register</button>
+
+<a href="login-vercel.html">Sudah punya akun? Login</a>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+function showToast(message){
+
+const toast=document.getElementById("toast")
+
+toast.innerText=message
+toast.style.display="block"
+
+setTimeout(()=>{
+toast.style.display="none"
+},3000)
+
+}
+
+function register(){
+
+const name=document.getElementById("name").value
+const email=document.getElementById("email").value
+const password=document.getElementById("password").value
+
+if(!name || !email || !password){
+showToast("Semua field harus diisi")
+return
+}
+
+if(!email.endsWith("@gmail.com")){
+showToast("Email harus menggunakan Gmail")
+return
+}
+
+/* simpan user ke localStorage */
+
+const user={
+name:name,
+email:email,
+password:password
+}
+
+localStorage.setItem("user",JSON.stringify(user))
+
+showToast("Register berhasil!")
+
+setTimeout(()=>{
+window.location="login-vercel.html"
+},800)
+
+}
+
+</script>
+
+</body>
+</html>

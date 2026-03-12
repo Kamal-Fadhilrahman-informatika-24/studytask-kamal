@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile</title>
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#4f46e5,#6366f1,#818cf8);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+margin:0;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:35px;
+border-radius:16px;
+width:360px;
+box-shadow:0 15px 35px rgba(0,0,0,0.25);
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+/* AVATAR */
+
+.avatar{
+width:70px;
+height:70px;
+border-radius:50%;
+background:#6366f1;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+margin-bottom:15px;
+}
+
+/* FORM GROUP */
+
+.form-group{
+width:100%;
+text-align:left;
+margin-bottom:12px;
+}
+
+.form-group label{
+font-size:13px;
+color:#444;
+}
+
+/* INPUT */
+
+input{
+width:100%;
+padding:11px;
+border-radius:8px;
+border:1px solid #e5e7eb;
+margin-top:4px;
+background:#f9fafb;
+}
+
+/* BUTTON */
+
+button{
+width:100%;
+padding:11px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+font-weight:600;
+}
+
+/* BUTTON COLORS */
+
+.logout{
+background:#6366f1;
+color:white;
+}
+
+.delete{
+background:#ef4444;
+color:white;
+}
+
+.back{
+background:#6b7280;
+color:white;
+}
+
+#toast{
+position:fixed;
+top:20px;
+right:20px;
+background:#111827;
+color:white;
+padding:14px 20px;
+border-radius:8px;
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="avatar" id="avatar">U</div>
+<h2>Profil Saya</h2>
+
+<div class="form-group">
+<label>Nama</label>
+<input type="text" id="name" readonly>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="email" readonly>
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" value="********" readonly>
+</div>
+
+<button class="logout" onclick="logout()">Logout</button>
+
+<button class="delete" onclick="deleteAccount()">Hapus Akun</button>
+
+<button class="back" onclick="goDashboard()">Kembali</button>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+function showToast(message){
+
+const toast=document.getElementById("toast")
+
+toast.innerText=message
+toast.style.display="block"
+
+setTimeout(()=>{
+toast.style.display="none"
+},3000)
+
+}
+
+/* Ambil data user dari localStorage */
+
+let user = JSON.parse(localStorage.getItem("user"))
+
+/* Jika belum ada user, buat user demo */
+
+if(!user){
+
+user = {
+name:"Demo User",
+email:"demo@gmail.com"
+}
+
+localStorage.setItem("user",JSON.stringify(user))
+
+}
+
+/* tampilkan profile */
+
+document.getElementById("name").value = user.name
+document.getElementById("email").value = user.email
+
+document.getElementById("avatar").innerText =
+user.name.charAt(0).toUpperCase()
+
+/* logout */
+
+function logout(){
+
+localStorage.removeItem("token")
+
+showToast("Logout berhasil")
+
+setTimeout(()=>{
+window.location="login-vercel.html"
+},800)
+
+}
+
+/* hapus akun */
+
+function deleteAccount(){
+
+if(!confirm("Yakin ingin menghapus akun?")){
+return
+}
+
+localStorage.removeItem("user")
+localStorage.removeItem("tasks")
+localStorage.removeItem("token")
+
+showToast("Akun berhasil dihapus")
+
+setTimeout(()=>{
+window.location="register.html"
+},1000)
+
+}
+
+/* kembali dashboard */
+
+function goDashboard(){
+
+window.location="dashboard-vercel.html"
+
+}
+
+</script>
+
+</body>
+</html>
