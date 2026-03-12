@@ -383,6 +383,31 @@ hideLoading()
 
 }
 
+function showDate(){
+
+const today=new Date()
+
+const options={
+weekday:'long',
+year:'numeric',
+month:'long',
+day:'numeric'
+}
+
+const date=today.toLocaleDateString('id-ID',options)
+
+document.getElementById("todayDate").innerText=date
+
+}
+
+showDate()
+
+const token=localStorage.getItem("token")
+
+if(!token){
+window.location="login-vercel.html"
+}
+
 function deleteTask(index){
 
 tasks.splice(index,1)

@@ -87,6 +87,33 @@ border-radius:8px;
 display:none;
 }
 
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.3);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.spinner{
+width:50px;
+height:50px;
+border:5px solid #ddd;
+border-top:5px solid #6366f1;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
 </style>
 
 </head>
@@ -115,6 +142,10 @@ display:none;
 
 <div id="toast"></div>
 
+<div id="loading" class="loading">
+<div class="spinner"></div>
+</div>
+
 <script>
 
 function showToast(message){
@@ -128,6 +159,14 @@ setTimeout(()=>{
 toast.style.display="none"
 },3000)
 
+}
+
+function showLoading(){
+document.getElementById("loading").style.display="flex"
+}
+
+function hideLoading(){
+document.getElementById("loading").style.display="none"
 }
 
 function register(){
@@ -146,7 +185,9 @@ showToast("Email harus menggunakan Gmail")
 return
 }
 
-/* simpan user ke localStorage */
+showLoading()
+
+setTimeout(()=>{
 
 const user={
 name:name,
@@ -158,8 +199,8 @@ localStorage.setItem("user",JSON.stringify(user))
 
 showToast("Register berhasil!")
 
-setTimeout(()=>{
 window.location="login-vercel.html"
+
 },800)
 
 }

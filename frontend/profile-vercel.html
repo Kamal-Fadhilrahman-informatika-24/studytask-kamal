@@ -107,6 +107,33 @@ border-radius:8px;
 display:none;
 }
 
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.3);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.spinner{
+width:50px;
+height:50px;
+border:5px solid #ddd;
+border-top:5px solid #6366f1;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
 </style>
 </head>
 
@@ -141,6 +168,10 @@ display:none;
 </div>
 
 <div id="toast"></div>
+
+<div id="loading" class="loading">
+<div class="spinner"></div>
+</div>
 
 <script>
 
@@ -184,14 +215,26 @@ user.name.charAt(0).toUpperCase()
 
 /* logout */
 
+function showLoading(){
+document.getElementById("loading").style.display="flex"
+}
+
+function hideLoading(){
+document.getElementById("loading").style.display="none"
+}
+
 function logout(){
+
+showLoading()
+
+setTimeout(()=>{
 
 localStorage.removeItem("token")
 
 showToast("Logout berhasil")
 
-setTimeout(()=>{
 window.location="login-vercel.html"
+
 },800)
 
 }
@@ -204,15 +247,19 @@ if(!confirm("Yakin ingin menghapus akun?")){
 return
 }
 
+showLoading()
+
+setTimeout(()=>{
+
 localStorage.removeItem("user")
 localStorage.removeItem("tasks")
 localStorage.removeItem("token")
 
 showToast("Akun berhasil dihapus")
 
-setTimeout(()=>{
 window.location="register-vercel.html"
-},1000)
+
+},800)
 
 }
 
@@ -220,7 +267,13 @@ window.location="register-vercel.html"
 
 function goDashboard(){
 
+showLoading()
+
+setTimeout(()=>{
+
 window.location="dashboard-vercel.html"
+
+},600)
 
 }
 
