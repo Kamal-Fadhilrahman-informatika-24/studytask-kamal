@@ -129,6 +129,33 @@ border-radius:5px;
 display:none;
 }
 
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.3);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.spinner{
+width:50px;
+height:50px;
+border:5px solid #ccc;
+border-top:5px solid #6366f1;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
 </style>
 </head>
 
@@ -190,7 +217,12 @@ display:none;
 
 <div id="toast"></div>
 
+<div id="loading" class="loading">
+<div class="spinner"></div>
+</div>
+
 <script>
+    
 
 function showToast(message){
 
@@ -214,6 +246,40 @@ localStorage.setItem("tasks", JSON.stringify(tasks))
 
 function saveTasks(){
 localStorage.setItem("tasks",JSON.stringify(tasks))
+}
+
+function getDueMessage(deadline,status){
+
+if(status === "done"){
+return "✅ Mantap! Task sudah selesai"
+}
+
+if(!deadline){
+return "-"
+}
+
+const today = new Date()
+const due = new Date(deadline)
+
+today.setHours(0,0,0,0)
+due.setHours(0,0,0,0)
+
+const diff = Math.ceil((due - today)/(1000*60*60*24))
+
+if(diff > 1){
+return `⏳ Due date ${diff} hari lagi`
+}
+
+if(diff === 1){
+return "⚠️ Besok deadline!"
+}
+
+if(diff === 0){
+return "❗ Deadline hari ini!"
+}
+
+return `🚨 Terlambat ${Math.abs(diff)} hari`
+
 }
 
 function loadTasks(){
@@ -243,8 +309,9 @@ document.getElementById("doneTask").innerText=done
 
 tasks.forEach((task,index)=>{
 
-list.innerHTML+=`
+const dueMessage = getDueMessage(task.deadline, task.status)
 
+list.innerHTML += `
 <div class="card">
 
 <h3>${task.title}
@@ -257,19 +324,30 @@ ${task.status}
 
 <p>Deadline : ${task.deadline || "-"}</p>
 
-<button class="edit" onclick="editTask(${index})">Edit</button>
+<p>${dueMessage}</p>
 
+<button class="edit" onclick="editTask(${index})">Edit</button>
 <button class="delete" onclick="deleteTask(${index})">Delete</button>
 
 </div>
-
 `
 
 })
+}
 
+function showLoading(){
+document.getElementById("loading").style.display="flex"
+}
+
+function hideLoading(){
+document.getElementById("loading").style.display="none"
 }
 
 function addTask(){
+
+showLoading()
+
+setTimeout(()=>{
 
 const title=document.getElementById("title").value
 const description=document.getElementById("description").value
@@ -277,6 +355,7 @@ const status=document.getElementById("status").value
 const deadline=document.getElementById("deadline").value
 
 if(!title){
+hideLoading()
 showToast("Judul task harus diisi")
 return
 }
@@ -297,6 +376,10 @@ document.getElementById("deadline").value=""
 showToast("Task berhasil ditambahkan")
 
 loadTasks()
+
+hideLoading()
+
+},500)
 
 }
 
